@@ -10,6 +10,9 @@ describe('Menu Links Tests', () => {
             .loginAsStandardUser()
 
         HomePage.checkHomePageOpened()
-            .checkMenuItems();
+            .checkHidingAndShowingMenuItems()
+            .checkAboutLink();
+
+        LoginPage.open();
     })
 }) 

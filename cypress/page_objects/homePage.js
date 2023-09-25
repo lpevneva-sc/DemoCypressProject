@@ -5,9 +5,10 @@ class HomePage {
     this.closeMenuButton = '#react-burger-cross-btn';
     this.pageTitle = '.app_logo';
     this.allItemsLink = '#inventory_sidebar_link';
-    this.aboutLink = '#about_sidebar_link'
-    this.logoutLink = '#logout_sidebar_link'
-    this.resetAppStateLink = '#reset_sidebar_link'
+    this.aboutLink = '#about_sidebar_link';
+    this.logoutLink = '#logout_sidebar_link';
+    this.resetAppStateLink = '#reset_sidebar_link';
+    this.sauceLabUniqItem = 'img[alt="Saucelabs"]';
   }
 
   checkHomePageOpened() {
@@ -15,6 +16,35 @@ class HomePage {
       .should('be.visible')
 
     this.checkShoppingCartButtonShown();
+
+    return this;
+  }
+
+  checkHidingAndShowingMenuItems() {
+    cy.get(this.menuButton)
+      .should('be.visible')
+
+    this.checkAllSubmenuHided();
+    this.openMenu();
+
+    cy.get(this.closeMenuButton)
+      .click()
+
+    this.checkAllSubmenuHided();
+
+    return this;
+  }
+
+  checkAboutLink() {
+
+    this.openMenu();
+
+    cy.get(this.aboutLink)
+      .should('be.visible')
+      .click()
+
+      .get(this.sauceLabUniqItem)
+      .should('be.visible')
 
     return this;
   }
@@ -53,21 +83,6 @@ class HomePage {
     cy.get(this.aboutLink).should('not.be.visible')
     cy.get(this.logoutLink).should('not.be.visible')
     cy.get(this.resetAppStateLink).should('not.be.visible')
-
-    return this;
-  }
-
-  checkMenuItems() {
-    cy.get(this.menuButton)
-      .should('be.visible')
-
-    this.checkAllSubmenuHided();
-    this.openMenu();
-
-    cy.get(this.closeMenuButton)
-      .click()
-
-    this.checkAllSubmenuHided();
 
     return this;
   }
