@@ -94,9 +94,10 @@ class HomePage {
     return this;
   }
 
-  findProductByName(name) {
+  findAndOpenProductByName(name) {
     cy.contains(name)
-      .should('be.visible');
+      .should('be.visible')
+      .click();
 
     return this;
   }
