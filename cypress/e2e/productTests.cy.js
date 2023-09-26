@@ -32,4 +32,32 @@ describe(' Product Tests', () => {
         })
 
     })
+
+    it('Sorting products by price increasing', () => {
+        LoginPage.open()
+            .loginAsStandardUser();
+
+        HomePage.checkSortingProductsByPriceAZ('Price (low to high)');
+    })
+
+    it('Sorting products by price decreasing', () => {
+        LoginPage.open()
+            .loginAsStandardUser();
+
+        HomePage.checkSortingProductsByPriceZA('Price (high to low)');
+    })
+
+    it('Sorting products by name A - Z ', () => {
+        LoginPage.open()
+            .loginAsStandardUser();
+
+        HomePage.checkSortingByProductNameAZ('Name (A to Z)');
+    })
+
+    it('Sorting products by name Z - A ', () => {
+        LoginPage.open()
+            .loginAsStandardUser();
+
+        HomePage.checkSortingByProductNameZA('Name (Z to A)');
+    })
 }) 

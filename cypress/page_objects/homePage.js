@@ -9,9 +9,13 @@ class HomePage {
     this.logoutLink = '#logout_sidebar_link';
     this.resetAppStateLink = '#reset_sidebar_link';
     this.sauceLabUniqItem = 'img[alt="Saucelabs"]';
+    this.sortingSelectBox = '.product_sort_container';
+    this.allPrices = '.inventory_item_price';
+    this.allProductNames = '.inventory_item_name';
   }
 
   checkHomePageOpened() {
+
     cy.get(this.pageTitle)
       .should('be.visible')
 
@@ -21,6 +25,7 @@ class HomePage {
   }
 
   checkHidingAndShowingMenuItems() {
+
     cy.get(this.menuButton)
       .should('be.visible')
 
@@ -50,6 +55,7 @@ class HomePage {
   }
 
   logout() {
+
     this.openMenu()
 
     cy.get(this.logoutLink)
@@ -60,6 +66,7 @@ class HomePage {
   }
 
   openMenu() {
+
     cy.get(this.menuButton)
       .should('be.visible')
       .click();
@@ -69,7 +76,84 @@ class HomePage {
     return this;
   }
 
+  checkSortingProductsByPriceAZ(sortKindText) {
+
+    this.checkSortingByPrice(sortKindText, (a, b) => a - b);
+
+    return this;
+  }
+
+  checkSortingProductsByPriceZA(sortKindText) {
+
+    this.checkSortingByPrice(sortKindText, (a, b) => b - a);
+
+    return this;
+  }
+
+  checkSortingByProductNameAZ(sortKindText) {
+
+    this.checkSortingByProductName(sortKindText, (array) => { array.sort() });
+
+    return this;
+  }
+
+  checkSortingByProductNameZA(sortKindText) {
+
+    this.checkSortingByProductName(sortKindText, (array) => { array.sort(); array.reverse() });
+
+    return this;
+  }
+
+  checkSortingByPrice(sortKindText, func) {
+
+    let numbersArray = []
+    let sortedArray = []
+
+    cy.get(this.sortingSelectBox)
+      .should('be.visible')
+      .select(sortKindText);
+
+    cy.get(this.allPrices)
+      .each(($el, index, $arr) => {
+
+        const text = $el.text().split('$').join('');
+        numbersArray.push(+text);
+        sortedArray.push(+text);
+      })
+      .then(($arr) => {
+        sortedArray.sort(func);
+        expect(numbersArray).to.have.ordered.members(sortedArray);
+      })
+
+    return this;
+  }
+
+  checkSortingByProductName(sortKindText, func) {
+
+    let descriptionArray = []
+    let sortedArray = []
+
+    cy.get(this.sortingSelectBox)
+      .should('be.visible')
+      .select(sortKindText);
+
+    cy.get(this.allProductNames)
+      .each(($el, index, $arr) => {
+
+        const text = $el.text();
+        descriptionArray.push(text);
+        sortedArray.push(text);
+      })
+      .then(($arr) => {
+        sortedArray.func;
+        expect(descriptionArray).to.have.ordered.members(sortedArray);
+      })
+
+    return this;
+  }
+
   checkAllSubmenuShown() {
+
     cy.get(this.allItemsLink).should('be.visible')
     cy.get(this.aboutLink).should('be.visible')
     cy.get(this.logoutLink).should('be.visible')
@@ -79,6 +163,7 @@ class HomePage {
   }
 
   checkAllSubmenuHided() {
+
     cy.get(this.allItemsLink).should('not.be.visible')
     cy.get(this.aboutLink).should('not.be.visible')
     cy.get(this.logoutLink).should('not.be.visible')
@@ -88,6 +173,7 @@ class HomePage {
   }
 
   checkShoppingCartButtonShown() {
+
     cy.get(this.shoppingCartButton)
       .should('be.visible')
 
@@ -95,6 +181,7 @@ class HomePage {
   }
 
   findAndOpenProductByName(name) {
+
     cy.contains(name)
       .should('be.visible')
       .click();
